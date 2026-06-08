@@ -1,0 +1,46 @@
+package com.kh.animal.view;
+
+import java.util.Scanner;
+
+import com.kh.animal.controller.AnimalController;
+
+public class AnimalView {
+	private Scanner sc = new Scanner(System.in);
+	private AnimalController ac = new AnimalController();
+	/*
+	 * ANIMAL
+	 * 
+	 * insertAnimal
+	 * selectAnimalList
+	 * selectAnimal
+	 * updateAnimal
+	 * deleteAnimal
+	 * 
+	 * ============================
+	 * 
+	 * save
+	 * findAll
+	 * findByXXX
+	 * update
+	 * deleteByXXX
+	 * 
+	 * 
+	 */
+	public void mainMenu() {
+		while(true) {
+			System.out.println("동물관리 시스템에 오신것을 환영합니다~~");
+			System.out.println("1.동물 추가하기");
+			System.out.println("메뉴 선택 >");
+			String menu = sc.nextLine();
+			
+			switch(menu) {
+			case "1" : save(); break;
+			case "9" : sc.close();return;
+			}
+		}
+	}
+	
+	
+	
+	
+}

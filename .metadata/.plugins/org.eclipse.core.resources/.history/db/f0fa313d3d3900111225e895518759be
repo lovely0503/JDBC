@@ -1,0 +1,70 @@
+package com.kh.animal.view;
+
+import java.util.Scanner;
+
+import com.kh.animal.controller.AnimalController;
+import com.kh.animal.model.dto.AnimalDto;
+
+public class AnimalView {
+	private Scanner sc = new Scanner(System.in);
+	private AnimalController ac = new AnimalController();
+	/*
+	 * ANIMAL
+	 * 
+	 * insertAnimal
+	 * selectAnimalList
+	 * selectAnimal
+	 * updateAnimal
+	 * deleteAnimal
+	 * 
+	 * ============================
+	 * 
+	 * save
+	 * findAll
+	 * findByXXX
+	 * update
+	 * deleteByXXX
+	 * 
+	 * 
+	 */
+	public void mainMenu() {
+		while(true) {
+			System.out.println("동물관리 시스템에 오신것을 환영합니다~~");
+			System.out.println("1.동물 추가하기");
+			System.out.println("메뉴 선택 >");
+			String menu = sc.nextLine();
+			
+			switch(menu) {
+			case "1" : save(); break;
+			case "9" : sc.close();return;
+			}
+		}
+	}
+	private void save() {
+		
+		System.out.println("동물 추가 서비스입니다");
+		System.out.println("동물의 이름을 입력하세요");
+		String name = sc.nextLine();
+		
+		System.out.println("동물의 종 번호를 입력하세요");
+		String speciesId = sc.nextLine();
+		
+		System.out.println("동물의 구역번호를 입력하세요");
+		String zoneId = sc.nextLine();
+		
+		System.out.println("동물의 사육사번호를 입력하세요");
+		String keeperId = sc.nextLine();
+		
+		System.out.println("동물의 성별을 입력하세요");
+		String gender = sc.nextLine();
+		
+		System.out.println("동물의 몸무게를 입력하세요");
+		double kg = sc.nextDouble();
+		
+		ac.save(new AnimalDto(name,speciesId,zoneId,keeperId,gender,kg));
+		
+	}
+	
+	
+	
+}

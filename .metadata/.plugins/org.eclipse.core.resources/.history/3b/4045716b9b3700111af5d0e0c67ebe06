@@ -1,0 +1,35 @@
+package com.kh.keeper.view;
+
+import java.util.Scanner;
+
+import com.kh.keeper.controller.KeeperController;
+
+public class KeeperView {
+	private Scanner sc = new Scanner(System.in);
+	private KeeperController kc = new KeeperController();
+	
+	public void mainMenu() {
+		while(true) {
+			System.out.println("사육사 관리 프로그램입니다");
+			System.out.println("1. 사육사 추가하기");
+			System.out.println("2. 사육사 전체 조회하기");
+			System.out.println("3. 사육사 수정하기");
+			System.out.println("4. 사육사 삭제하기");
+			System.out.println("원하시는 메뉴를 선택해주세요 >");
+			String menu = sc.nextLine();
+			
+			switch(menu) {
+			case "1" : insertKeeper(); break;
+			case "2" : break;
+			case "3" : break;
+			case "4" : break;
+			case "9" : sc.close();return;
+				default : System.out.println("존재하지 않는 메뉴입니다.");
+			}
+		}
+	}
+	
+	private void insertKeeper() {
+		
+	}
+}

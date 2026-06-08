@@ -1,0 +1,12 @@
+package com.kh.animal.model.service;
+
+import com.kh.animal.model.dto.AnimalDto;
+
+public class AnimalService {
+
+	public void save(AnimalDto animal) {
+		
+		
+		
+	}
+}

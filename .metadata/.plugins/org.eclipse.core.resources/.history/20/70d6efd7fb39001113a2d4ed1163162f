@@ -1,0 +1,22 @@
+package com.kh.animal.model.service;
+
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
+import com.kh.animal.common.Template;
+import com.kh.animal.model.dao.KeeperDao;
+import com.kh.animal.model.dto.KeeperDto;
+
+public class KeeperService {
+	
+	public List<KeeperDto> selectKeeperAndAnimals(){
+		SqlSession session = Template.getSqlSession();
+		
+		//쿼리 1번 - 사육사 전체조회
+		List<KeeperDto> keepers = new KeeperDao().selectKeeperList(session);
+		
+		
+	}
+	
+}

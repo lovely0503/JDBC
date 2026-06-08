@@ -1,0 +1,25 @@
+package com.kh.keeper.model.dao;
+
+import java.sql.Connection;
+
+import com.kh.keeper.common.JdbcTemplate;
+import com.kh.keeper.model.dto.KeeperDto;
+
+public class KeeperDao {
+	/*
+	 * DAO(Data access Object)
+	 * 
+	 * Database관련된 작업을 전문적으로 담당하는 객체
+	 * 
+	 * 하나의 메소드는 하나의 SQL문만 실행
+	 * DB에 직접 접근해서 SQL문을 실행후 결과 받아오기(JDBC)
+	 * 
+	 */
+	
+	static {
+		JdbcTemplate.registDriver();
+	}
+	public int insertKeeper(Connection conn, KeeperDto kd) {
+		
+	}
+}

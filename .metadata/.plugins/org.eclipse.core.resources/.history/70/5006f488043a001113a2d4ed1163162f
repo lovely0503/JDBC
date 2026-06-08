@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace = "keeperMapper">
+ 
+ 		<select id="selectKeeperList"
+ 				resultType = "keeper">
+ 				SELECT
+ 					KEEPER_ID
+ 					,KEEPER_NAME
+ 				FROM
+ 					KEEPER
+ 		</select>
+ 		
+ 		<select id="selectAnimalList"
+ 				resultType="animal"
+ 				parameterType="string">
+ 			SELECT
+ 				ANIMAL_ID
+ 				,ANIMAL_NAME
+ 			FROM
+ 				ANIMAL
+ 			WHERE
+ 				KEEPER_ID = #{keeperId}
+ 		</select>
+ 		
+ 
+  </mapper>

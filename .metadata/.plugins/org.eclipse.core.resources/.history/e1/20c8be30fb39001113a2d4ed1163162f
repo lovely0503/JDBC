@@ -1,0 +1,14 @@
+package com.kh.animal.model.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
+import com.kh.animal.model.dto.KeeperDto;
+
+public class KeeperDao {
+	
+	public List<KeeperDto> selectKeeperList(SqlSession session){
+		
+	}
+}

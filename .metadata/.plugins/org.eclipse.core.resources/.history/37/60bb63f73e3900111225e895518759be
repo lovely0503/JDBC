@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace = "animalMapper">
+  <!-- namespace : 각 mapper의 고유한 별칭! 다른 매퍼랑 중복되면 XXX -->
+  
+  	
+  	<insert id="save">
+  		INSERT
+  			INTO
+  				ANIMAL
+  		VALUES
+  			(
+  			 'A' || SEQ_ANIMAL_NO.NEXTVAL
+  			, ?
+  			, ?
+  			, ?
+  			, ?
+  			, ?
+  			, ?
+  			, SYSDATE
+  			, SYSDATE
+  			)
+  	</insert>
+  
+  </mapper>

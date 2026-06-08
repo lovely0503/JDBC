@@ -1,0 +1,115 @@
+package com.kh.keeper.view;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+import com.kh.keeper.controller.KeeperController;
+import com.kh.keeper.model.dto.KeeperDto;
+import com.kh.keeper.model.vo.Keeper;
+
+public class KeeperView {
+	private Scanner sc = new Scanner(System.in);
+	private KeeperController kc = new KeeperController();
+	
+	public void mainMenu() {
+		while(true) {
+			System.out.println("사육사 관리 프로그램입니다");
+			System.out.println("1. 사육사 추가하기");
+			System.out.println("2. 사육사 전체 조회하기");
+			System.out.println("3. 사육사 수정하기");
+			System.out.println("4. 사육사 삭제하기");
+			System.out.println("원하시는 메뉴를 선택해주세요 >");
+			String menu = sc.nextLine();
+			
+			switch(menu) {
+			case "1" : insertKeeper(); break;
+			case "2" : selectKeeperList(); break;
+			case "3" : updateKeeper(); break;
+			case "4" : deleteKeeper(); break;
+			case "9" : sc.close();return;
+				default : System.out.println("존재하지 않는 메뉴입니다.");
+			}
+		}
+	}
+	
+	private void insertKeeper() {
+		//KEEPER_NAME,ZONE_ID
+		System.out.println("사육사 추가기능입니다");
+		System.out.println("추가하실 사육사의 이름을 입력하세요 >");
+		String name = sc.nextLine();
+		System.out.println("사육사의 담당 구역을 입력하세요 >");
+		String zone = sc.nextLine();
+		
+		
+		int result = kc.insertKeeper(new KeeperDto(name,zone));
+		
+		if(result >0) {
+			System.out.println("사육사 추가에 성공했습니다");
+		}else {
+			System.out.println("사육사 추가에 실패했습니다");
+		}
+	}
+	
+	private void selectKeeperList() {
+		System.out.println("사육사 전체조회 서비스 입니다");
+		
+		List<Keeper> keepers = kc.selectKeeperList();
+		
+		if(keepers.isEmpty()) {
+			System.out.println("아직 사육사가 존재하지않습니다");
+		}else {
+			
+			keepers.stream()
+				.map(k -> "아이디 : "+ k.keeperId()
+						+", 이름 :"+k.keeperName()
+						+", 입사일 :"+k.hireDate()
+						+", 담당구역 :"+k.zoneId())
+						.forEach(System.out::println);
+		}
+	}
+	
+	private void updateKeeper() {
+		
+		//SQL문
+		//UPDATE KEEPER SET 뭘 바꿀건지 WHERE 조건을 ?/
+		//키퍼네임, 담당구역, 입사일??
+		System.out.println("정보를 변경하실 사육사의 아이디를 입력하세요 >");
+		String keeperId = sc.nextLine();
+		System.out.println("새로운 이름을 입력해주세요 >");
+		String keeperName = sc.nextLine();
+		System.out.println("새로운 담당구역을 입력해주세요 >");
+		String zoneId = sc.nextLine();
+		System.out.println("새로운 입사일을 입력해주세요 >");
+		String hireDate = sc.nextLine();
+		Map <String,String> keeper = new HashMap();
+		keeper.put("keeperId", keeperId);
+		keeper.put("keeperName", keeperName);
+		keeper.put("zoneId", zoneId);
+		keeper.put("hireDate", hireDate);
+		
+		int result = kc.updateKeeper(keeper);
+		
+		if(result > 0) {
+			System.out.println("정보 수정에 성공했습니다");
+		}else {
+			System.out.println("정보 수정에 실패했습니다");
+		}
+	}
+	
+	private void deleteKeeper() {
+		System.out.println("사육사를 지워버리겠습니다");
+		System.out.println("지우고 싶은 사육자의 아이디를 입력하시오 >");
+		String keeperId = sc.nextLine();
+		
+		//DELETE FROM KEEPER WHERE KEEPER_ID = ?
+		int result = kc.deleteKeeper(keeperId);
+		
+		if(result > 0) {
+			System.out.println("딜리트 키퍼에 성공했습니다");
+		}else {
+			System.out.println("딜리트 키퍼에 실패했습니다");
+		}
+	}
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AnimalMapper">
+
+    <!-- INSERT -->
+    <insert id="insertStory">
+        INSERT INTO ANIMAL_STORY
+        (ANIMAL_HELL, ANIMAL_PIECE, ANIMAL_FIY, ANIMAL_EAT, ANIMAL_PURE, ANIMAL_ID)
+        VALUES
+        (#{animalHell}, #{animalPiece}, #{animalFiy}, #{animalEat}, #{animalPure}, #{animalId})
+    </insert>
+
+    <!-- SELECT -->
+    <select id="selectAllStory" resultType="AnimalStory">
+        SELECT * FROM ANIMAL_STORY
+    </select>
+
+    <!-- JOIN -->
+    <select id="selectJoin" resultType="AnimalStory">
+        SELECT 
+            S.ANIMAL_LEGEND,
+            S.ANIMAL_HELL,
+            S.ANIMAL_PIECE,
+            S.ANIMAL_FIY,
+            S.ANIMAL_EAT,
+            S.ANIMAL_PURE,
+            S.ANIMAL_ID
+        FROM ANIMAL_STORY S
+        JOIN LEGEND_ANIMAL L
+        ON S.ANIMAL_ID = L.ANIMAL_ID
+    </select>
+
+    <!-- DELETE -->
+    <delete id="deleteStory">
+        DELETE FROM ANIMAL_STORY
+        WHERE ANIMAL_ID = #{animalId}
+    </delete>
+
+</mapper>

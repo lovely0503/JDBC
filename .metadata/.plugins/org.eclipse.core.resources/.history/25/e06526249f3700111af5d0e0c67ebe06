@@ -1,0 +1,5 @@
+package com.kh.keeper.common;
+
+public class JdbcTemplete {
+
+}

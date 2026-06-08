@@ -1,0 +1,5 @@
+package com.kh.keeper.model.dto;
+
+public class KeeperDto {
+
+}

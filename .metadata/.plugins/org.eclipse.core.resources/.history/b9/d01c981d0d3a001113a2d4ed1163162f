@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace = "keeperMapper">
+ 
+ 		<select id="selectKeeperList"
+ 				resultType = "keeper">
+ 				SELECT
+ 					KEEPER_ID
+ 					,KEEPER_NAME
+ 				FROM
+ 					KEEPER
+ 		</select>
+ 		
+ 		<select id="selectAnimalList"
+ 				resultType="animal"
+ 				parameterType="string">
+ 			SELECT
+ 				ANIMAL_ID
+ 				,ANIMAL_NAME
+ 			FROM
+ 				ANIMAL
+ 			WHERE
+ 				KEEPER_ID = #{keeperId}
+ 		</select>
+ 		
+ 		<resultMap id = "keeperWithAnimals" type="keeper">
+ 			<id column = "KEEPER_ID" property="keeperId"/>
+ 			<result column = "KEEPER_NAME" property="keeperName"/>
+ 			<collection property="animals" ofType="animal">
+ 				<id column="ANIMAL_ID" property="animalId"/>
+ 				<result column="ANIMAL_NAME" property="animalName"/>
+ 			</collection>
+ 		</resultMap>
+ 		
+ 		
+ 		<select id="findKeeperAndAnimals" resultMap="keeperWithAnimals">
+ 			SELECT
+ 				KEEPER_ID
+ 				,KEEPER_NAME
+ 				,ANIMAL_ID
+ 				,ANIMAL_NAME
+ 			FROM
+ 				KEEPER
+ 			JOIN
+ 				ANIMAL USING(KEEPER_ID)
+ 		</select>
+ 
+ 		<select id="selectKeeperByCondition"
+ 				resultType = "keeper">
+ 		
+ 		</select>
+  </mapper>

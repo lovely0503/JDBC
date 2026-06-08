@@ -1,0 +1,131 @@
+package com.kh.keeper.model.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.kh.keeper.common.JdbcTemplate;
+import com.kh.keeper.model.dto.KeeperDto;
+import com.kh.keeper.model.vo.Keeper;
+
+public class KeeperDao {
+	/*
+	 * DAO(Data access Object)
+	 * 
+	 * Database관련된 작업을 전문적으로 담당하는 객체
+	 * 
+	 * 하나의 메소드는 하나의 SQL문만 실행
+	 * DB에 직접 접근해서 SQL문을 실행후 결과 받아오기(JDBC)
+	 * 
+	 */
+	/*
+	 * JDBC용 객체
+	 * -Connection :DB와 연결정보를 담는 객체
+	 * -Statement :SQL문 실행 응답 받아오는 객체
+	 * -ResultSet : SELECT응답결과 담겨있는객체
+	 * 
+	 * -PreparedStatement : SQL문을 미리 준비하는 개념
+	 * 					미완성된 SQL문을 미리 전달하고
+	 * 					실행하기전 값을 Bind해서 실행함
+	 * 					미완성된 SQL문에 사용자가 입력한값이 들어갈수있도록
+	 * 					공간확보를 해놓음 ==> ?(placeholder)
+	 * 
+	 * -Statement와 PreparedStatement는 부모자식관계
+	 * 
+	 * -차이점
+	 * 
+	 * 1)Statement는 완성된 SQL문, PreparedStatement는 미완성SQL문
+	 * 
+	 * 2)객체생성
+	 * Statenemt == 커넥션객체.createStatement()
+	 * PreparedStatement == 커넥션객체.preparedStatement(sql);
+	 * 
+	 * 3)SQL문 실행
+	 * Statement == stmt.executeXXX(sql);
+	 * PreparedStatement == pstmt.executeXXX();
+	 * 
+	 * ? == placeholder에 실제값을 Binding해준뒤 실행한다
+	 * pstmt.setString()
+	 * pstmt.setInt()
+	 * 
+	 */
+	static {
+		JdbcTemplate.registDriver();
+	}
+	public int insertKeeper(Connection conn, KeeperDto kd) {
+		//Connection conn = null;
+		//Statement stmt = null;
+		int result = 0;
+		String sql = """
+						INSERT
+							INTO
+								KEEPER
+							VALUES
+								(
+								'K' || SEQ_KEEPER.NEXTVAL
+								,?
+								,SYSDATE
+								,?
+								)
+							""";
+		try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+			pstmt.setString(1,kd.getKeeperName());
+			pstmt.setString(2,kd.getZoneId());
+			
+			//pstmt.setString(홀더순번,값)
+			// =>'값' (양옆에 홑따옴표를 감싼상태로 알아서Bind)
+			//pstmt.setInt(홀더순번, 값)
+			//=> 값(알아서 잘 들어감)
+			
+			result = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	/*
+	 * PreparedStatement가 Statement보다 좋음
+	 * 
+	 * 1.구문분석 및 컴파일 최적화
+	 * 
+	 * Statement는 매번 SQL문을 파싱하고 실행하지만
+	 * PreparedStatement는 SQL쿼리를 최초 1회만 파싱하고 실행계획을 캐싱(메모리에 올림)
+	 *재사용적인 측면에서 훨씬 효율적
+	 *
+	 * 2.DB서버에 대한 트래픽 감소
+	 * 
+	 * 쿼리자체는 한번만 전송하고 이후에는 바인딩할 값만 전송하기 때문에
+	 * 동일쿼리를 반복 실행할때 높은 트래픽이 몰리는 애플리케이션
+	 *
+	 * 
+	 */
+	public List<Keeper> selectKeeperList(Connection conn){
+		List<Keeper> keepers = new ArrayList();
+		String sql = """
+						SELECT
+							KEEPER_ID
+							,KEEPER_NAME
+							,HIRE_DATE
+							,ZONE_ID
+						FROM
+							KEEPER
+						ORDER
+							BY
+								KEEPER_ID DESC
+					 """;
+		try(PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rset = pstmt.executeQuery()){
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return keepers;
+		
+		
+		
+	}
+}

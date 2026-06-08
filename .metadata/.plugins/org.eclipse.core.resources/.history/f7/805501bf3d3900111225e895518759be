@@ -1,0 +1,13 @@
+package com.kh.animal.model.dao;
+
+import org.apache.ibatis.session.SqlSession;
+
+import com.kh.animal.model.dto.AnimalDto;
+
+public class AnimalDao {
+
+	public int save(SqlSession session,AnimalDto animal) {
+		
+		
+	}
+}

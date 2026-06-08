@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace = "animalMapper">
+  <!-- namespace : 각 mapper의 고유한 별칭! 다른 매퍼랑 중복되면 XXX -->
+  
+  	
+  	<insert id="save"
+  			parameterType="animal">
+  		INSERT
+  			INTO
+  				ANIMAL
+  		VALUES
+  			(
+  			 'A' || SEQ_ANIMAL_ID.NEXTVAL
+  			, #{animalName}
+  			, #{speciesId}
+  			, #{zoneId}
+  			, #{keeperId}
+  			, #{gender}
+  			, #{weightKg}
+  			, SYSDATE
+  			, SYSDATE
+  			)
+  	</insert>
+  	<!-- 
+  		*DML =>
+  		<insert id="각 SQL문의 식별자>
+  		쿼리문
+  		</insert>
+  		<update></update>
+  		<delete></delete>
+  		
+  		=>pstmt객체를 쓸때 앞에선?를 이용했지만
+  		MyBatis를 사용할때는 위치홀더 대신 해당SQL문에 전달된 객체로부터 값을 꺼내서 사용
+  		#{필드명} => 내부적으로 getter()를 호출해서 값을 넣어줌
+  		#{필드명, 변수명, 또는 map의 키값}
+  	 -->
+  
+  </mapper>

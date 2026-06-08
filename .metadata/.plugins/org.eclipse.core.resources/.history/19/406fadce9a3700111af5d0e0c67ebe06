@@ -1,0 +1,5 @@
+package com.kh.keeper.model.vo;
+
+public class Keeper {
+
+}

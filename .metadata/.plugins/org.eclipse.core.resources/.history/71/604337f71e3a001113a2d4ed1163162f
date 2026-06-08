@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace = "animalMapper">
+  <!-- namespace : 각 mapper의 고유한 별칭! 다른 매퍼랑 중복되면 XXX -->
+  
+  	
+  	<insert id="save"
+  			parameterType="animal">
+  		INSERT
+  			INTO
+  				ANIMAL
+  		VALUES
+  			(
+  			 'A' || SEQ_ANIMAL_ID.NEXTVAL
+  			, #{animalName}
+  			, #{speciesId}
+  			, #{zoneId}
+  			, #{keeperId}
+  			, #{gender}
+  			, #{weightKg}
+  			, SYSDATE
+  			, SYSDATE
+  			)
+  	</insert>
+  	<!-- 
+  		*DML =>
+  		<insert id="각 SQL문의 식별자>
+  		쿼리문
+  		</insert>
+  		<update></update>
+  		<delete></delete>
+  		
+  		=>pstmt객체를 쓸때 앞에선?를 이용했지만
+  		MyBatis를 사용할때는 위치홀더 대신 해당SQL문에 전달된 객체로부터 값을 꺼내서 사용
+  		#{필드명} => 내부적으로 getter()를 호출해서 값을 넣어줌
+  		#{필드명, 변수명, 또는 map의 키값}
+  	 -->
+  	<!-- 
+  		*resultMap : ResultSet으로부터 조회한 컬럼의 값을 하나씩 뽑아서
+  					우리가 만든vo /DTO객체에 필드에담는 코드를 대신해주는 역할
+  					
+  		while(rset.next()){
+  			AnimalDto animal = new AnimalDto(rset.getString("ANIMAL_ID),
+  											rset.getString("ANIMAL_NAME)
+  											...)
+  			animals.add(animal)
+  			}
+  			이코드를 대체함
+  			
+  			<resultMap id="식별값" type="매핑하고자하는 자바객체의 타입(풀클래스명)">
+  				
+  				id PK컬럼명 일시
+  				<id column="조회된 결과를 뽑고자하는 컬럼명"property="해당 값을 먀핑할 필드명"/>
+  				
+  				나머지 컬럼
+  				<result column="조회된 결과를 뽑고자하는 컬럼명"property="해당 값을 매핑할 필드명"/>
+  				
+  				예시)
+  				<result column="SPECIES_NAME" property="speciesId"/>
+  			</resultMap>
+  	 -->
+  	 
+  	 <resultMap id="animalResultSet" type="animal">
+  	 	<id column="ANIMAL_ID" property="animalId" />
+  	 	<result column="ANIMAL_NAME" property="animalName"/>
+  	 	<result column="SPECIES_NAME" property="speciesId"/>
+  	 	<result column="ZONE_NAME" property="zoneId"/>
+  	 	<result column="KEEPER_NAME" property="keeperId" />
+  	 	<result column="GENDER" property="gender" />
+  	 	<result column="WEIGHT_KG" property="weightKg" />
+  	 	
+  	 </resultMap>
+  	 <sql id="animalColumn">
+  	 		SELECT
+  				ANIMAL_ID animalId
+  				,ANIMAL_NAME animalName
+  				,SPECIES_NAME speciesId
+  				,NVL(KEEPER_NAME,'없음') keeperId
+  				,ZONE_NAME zoneId
+  				,GENDER gender
+  				,WEIGHT_KG weightKg
+  			FROM
+  				ANIMAL
+  			JOIN
+  				SPECIES USING(SPECIES_ID)
+  			JOIN
+  				ZONE USING(ZONE_ID)
+  			LEFT
+  			JOIN
+  				KEEPER USING(KEEPER_ID)
+  	 </sql>
+	
+		<select id = "findAll"
+  			resultType = "animal">
+  			<include refid="animalColumn"/>
+  			ORDER
+  				BY
+  					ANIMAL_ID DESC
+  			</select>
+ 
+  		
+  	<!-- 
+  		*SELECT일 경우
+  		<select id="각SQL문의 식별값"
+  					resultType="반환하고자 하는 자바타입" 또는 resultMap="반환하고자하는 resultMap Id값">
+  			SELCET문
+  		</select>
+  		
+  		=>SELECT문 특) count(*) => 정수 / 아이디체크 =>문자열반환 / animal => animalDto
+  	 -->
+  	 
+  		<select id = "findById"
+  			resultType = "animal"
+  			parameterType = "string">
+  		<include refid="animalColumn" />
+  		
+  			WHERE
+  				ANIMAL_ID = #{id}
+  		</select>
+  		
+  		<select id="findByKeyword"
+  				resultType="animal"
+  				parameterType="string">
+  			SELECT
+  				 ANIMAL_ID 
+  				,ANIMAL_NAME 
+  				,SPECIES_ID 
+  				,ZONE_ID 
+  				,KEEPER_ID 
+  			FROM
+  				ANIMAL
+  			WHERE
+  				ANIMAL_NAME LIKE '%' || #{keyword} ||'%'
+  		</select>
+  		
+  		<update id="updateAnimal">
+  			UPDATE
+  				ANIMAL
+  			SET
+  				ZONE_ID = #{zoneId}
+  				,KEEPER_ID = #{keeperId}
+  				,WEIGHT_KG = #{weightKg}
+  			WHERE
+  				ANIMAL_ID = #{animalId}
+  		</update>
+  		
+  </mapper>
